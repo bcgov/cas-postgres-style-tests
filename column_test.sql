@@ -162,7 +162,7 @@ select is_empty(
     select table_schema, table_name, column_name
     from information_schema.columns
     where table_schema = any (string_to_array((SELECT setting FROM pg_settings WHERE name = 'search_path'), ', '))
-    and column_name in (select word from pg_get_keywords() where catcode !='U')
+    and column_name in (select word from pg_get_keywords() where catcode in ('R', 'T'))
     order by table_schema, table_name
   $$,
   'Columns do not use reserved keywords as identifiers. Violation format: {schema, table, column}'
