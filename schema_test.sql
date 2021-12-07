@@ -31,7 +31,7 @@ select is_empty(
     select schema_name
     from information_schema.schemata
     where schema_name = any (string_to_array((SELECT setting FROM pg_settings WHERE name = 'search_path'), ', '))
-    and schema_name in (select word from pg_get_keywords() where catcode !='U')
+    and schema_name in (select word from pg_get_keywords() where catcode in ('R', 'T'))
     order by schema_name
   $$,
   'Schemas do not use reserved keywords as identifiers. Violation format: {schema}'

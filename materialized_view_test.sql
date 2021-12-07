@@ -35,7 +35,7 @@ select is_empty(
   $$
     select schemaname, matviewname from pg_matviews
     where schemaname = any (string_to_array((SELECT setting FROM pg_settings WHERE name = 'search_path'), ', '))
-    and matviewname in (select word from pg_get_keywords() where catcode !='U')
+    and matviewname in (select word from pg_get_keywords() where catcode in ('R', 'T'))
     order by schemaname, matviewname
   $$,
   'Materialized views do not use reserved keywords as identifiers. Violation format: {schema, matview}'
